@@ -32,12 +32,10 @@
           <span v-else class="legend--empty"> Список пуст </span>
         </div>
         <div class="legend__chart">
-          <div class="legend__chart">
-            <div>
-              {{ formatedDate }}
-            </div>
-            <Doughnut ref="chart" />
+          <div class="chart-date">
+            {{ formatedDate }}
           </div>
+          <Doughnut ref="chart" />
         </div>
       </div>
       <div v-else class="profile">
@@ -211,5 +209,10 @@ h3 {
 
 .profile {
   padding-top: 20px;
+}
+
+.chart-date {
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 </style>
