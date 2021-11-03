@@ -90,7 +90,9 @@ export default {
       if (openedTable) {
         const tableId = openedTable.attr("id");
         openedTable.classed("isShowingProfile", false);
-        this.$emit("closed-profile", tableId);
+        if (tableId) {
+          this.$emit("closed-profile", tableId);
+        }
         unbind(openedTable.node());
       }
     },

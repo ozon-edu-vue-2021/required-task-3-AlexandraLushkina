@@ -7,16 +7,20 @@
       <div class="person__info-name">
         <b>{{ person.name }} ({{ person.age }})</b>
       </div>
-
-      <div class="person__info-email">Почта: {{ person.email }}</div>
-      <div class="person__info-email">Дата регистрации: {{ formatedDate }}</div>
-      <div class="person__info-about">О себе: {{ person.about }}</div>
+      <div class="mail-container">
+        <a value="person.email" :href="`mailto:${person.email}`">
+          <mailSvg class="mail-icon" />
+        </a>
+      </div>
+      <p class="person__info-email">Дата регистрации: {{ formatedDate }}</p>
+      <p class="person__info-about">О себе: {{ person.about }}</p>
     </div>
   </div>
 </template>
 
 <script>
 import { format } from "date-fns";
+import mailSvg from "../../assets/images/mail.svg";
 
 export default {
   props: {
@@ -24,6 +28,9 @@ export default {
       type: Object,
       default: null,
     },
+  },
+  components: {
+    mailSvg,
   },
   computed: {
     formatedDate() {
@@ -53,5 +60,18 @@ export default {
 
 .person__info-name {
   margin-bottom: 10px;
+  color: #3665e6;
+}
+
+.mail-container {
+  display: inline-block;
+}
+
+.mail-icon {
+  padding: 5px;
+  background-color: #e1ebfc;
+  width: 36px;
+  height: 36px;
+  border-radius: 30%;
 }
 </style>
