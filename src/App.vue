@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     tableClicked(id) {
-      this.isUserOpened = !this.isUserOpened;
+      this.isUserOpened = true;
       this.loadProfile(parseInt(id));
     },
     loadPeople() {
