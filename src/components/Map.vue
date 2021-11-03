@@ -17,17 +17,17 @@ import tables from "../assets/data/tables.json";
 import Table from "../assets/images/workPlace.svg";
 import legend from "../assets/data/legend.json";
 import ClickOutside from "vue-click-outside"; // https://www.npmjs.com/package/vue-click-outside для клика скрытия профиля
+import vClickOutside from "v-click-outside";
+const { bind, unbind } = vClickOutside.directive;
 
 export default {
   components: {
     MapSVG,
     Table,
   },
-  directives: {
-    ClickOutside,
-  },
   data() {
     return {
+      opened: false,
       isLoading: false,
       svg: null,
       g: null,
@@ -54,16 +54,22 @@ export default {
   },
   methods: {
     drawTables() {
-      const svgTablesGroup = this.g.append("g").classed("groupedTables", true);
-      console.log(svgTablesGroup);
       const svgTablesGroupPlace = this.g
         .append("g")
         .classed("groupedTables", true);
+
       this.tables.map((table) => {
         const targetSeat = svgTablesGroupPlace
           .append("g")
           .attr("transform", `translate(${table.x}, ${table.y}) scale(0.5)`)
-          .attr("id", table._id)
+          .on("click", () => {
+            d3.select(`#id_${table._id}`).classed("isShowingProfile", true);
+            this.$emit("table-clicked", table._id);
+            bind(document.querySelector(`#id_${table._id}`), {
+              value: this.outsideClick,
+            });
+          })
+          .attr("id", "id_" + table._id)
           .classed("employer-place", true);
 
         targetSeat
@@ -79,6 +85,18 @@ export default {
           );
       });
     },
+    outsideClick() {
+      const openedTable = d3.select(".isShowingProfile");
+      if (openedTable) {
+        const tableId = openedTable.attr("id");
+        openedTable.classed("isShowingProfile", false);
+        this.$emit("closed-profile", tableId);
+        unbind(openedTable.node());
+      }
+    },
+  },
+  directives: {
+    ClickOutside,
   },
 };
 </script>

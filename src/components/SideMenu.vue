@@ -54,6 +54,7 @@ import legend from "@/assets/data/legend.json";
 import Draggable from "vuedraggable";
 import { Doughnut } from "vue-chartjs";
 import { format } from "date-fns";
+import ClickOutside from "vue-click-outside"; // https://www.npmjs.com/package/vue-click-outside для клика скрытия профиля
 
 export default {
   props: {
@@ -65,6 +66,9 @@ export default {
       type: Object,
       default: null,
     },
+  },
+  directives: {
+    ClickOutside,
   },
   components: {
     LegendItem,
@@ -93,7 +97,7 @@ export default {
       this.legend = legend;
     },
     closeProfile() {
-      this.$emit("update:isUserOpenned", false);
+      this.$emit("closed-profile");
     },
     makeChart() {
       const legendChartData = {
