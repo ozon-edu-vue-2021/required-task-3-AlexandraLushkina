@@ -35,7 +35,7 @@
           <div class="chart-date">
             {{ formatedDate }}
           </div>
-          <Doughnut ref="chart" />
+          <pie-chart :chartdata="chartData" :options="chartOptions" />
         </div>
       </div>
       <div v-else class="profile">
@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import LegendItem from "./SideMenu/LegendItem.vue";
-import PersonCard from "./SideMenu/PersonCard.vue";
+import LegendItem from "./SideMenu/LegendItem";
+import PersonCard from "./SideMenu/PersonCard";
+import PieChart from "./PieChart";
 import legend from "@/assets/data/legend.json";
 import Draggable from "vuedraggable";
-import { Doughnut } from "vue-chartjs";
 import { format } from "date-fns";
 
 export default {
@@ -70,18 +70,21 @@ export default {
     LegendItem,
     PersonCard,
     Draggable,
-    Doughnut,
+    PieChart,
   },
   data() {
     return {
       legend: [],
+      chartData: {},
+      chartOptions: {},
     };
   },
   created() {
     this.loadLegend();
+    this.collectChartData();
   },
   mounted() {
-    this.makeChart();
+    this.collectChartData();
   },
   computed: {
     formatedDate() {
@@ -95,8 +98,8 @@ export default {
     closeProfile() {
       this.$emit("closed-profile");
     },
-    makeChart() {
-      const legendChartData = {
+    collectChartData() {
+      this.chartData = {
         labels: this.legend.map((it) => it.text),
         datasets: [
           {
@@ -106,13 +109,12 @@ export default {
           },
         ],
       };
-      const options = {
+      this.chartOptions = {
         borderWidth: "10px",
         legend: {
           display: false,
         },
       };
-      this.$refs.chart.renderChart(legendChartData, options);
     },
   },
 };
